@@ -40,3 +40,7 @@ data_group = data.groupby('class')
 - **label_list**: label 的所有可能的值 (Iris)
 
 ## Data Visualization
+### Mushroom
+![2021-10-19 下午 10-26-25](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/2021-10-19%20%E4%B8%8B%E5%8D%88%2010-26-25.png)
+
+![20211019223439](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/20211019223439.png)
