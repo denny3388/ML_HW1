@@ -39,11 +39,32 @@ data_group = data.groupby('class')
 - **cate_num_list**: 每個 feature 的所有可能的值的**數量** (Mushroom)
 - **label_list**: label 的所有可能的值 (Iris)
 
+## Data Preprocessing
+### Mushroom
+```python
+# Drop feature w/ missing value 
+data = data.drop(columns='stalk-root')
+feature_list.remove('stalk-root')
+
+# shuffle
+data = data.sample(frac=1)
+```
+- Drop features with missing value
+- Shuffle the data using `sameple()`
+
+### Iris
+```python
+# Divide data into group according to their class
+data_group = data.groupby('class')
+
+# shuffle
+data = data.sample(frac=1)
+```
+- 將 data 以他們的 class 分組，之後在做資料分析時較方便
+- Shuffle the data using `sameple()`
+
 ## Data Visualization (未完成！！！)
 ### Mushroom
-![2021-10-19 下午 10-26-25](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/2021-10-19%20%E4%B8%8B%E5%8D%88%2010-26-25.png)
-
-![20211019223439](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/20211019223439.png)
 
 ## Model Construction
 ### Mushroom
@@ -137,4 +158,139 @@ for train_index, test_index in kf.split(X,y):
 
 ## Results
 ### Mushroom
+
+此處以 **'e' 為 positive**，並計算 Confusion matrix, Accuracy, Sensitivity(Recall), Precision 等數值
+```python
+TP, FP, FN, TN = 0, 0, 0, 0
+pred = clf.predict(X_test)
+for i in range(len(X_test)):
+    if pred[i] == 'e' and y_test[i] == 'e':
+        TP += 1
+    elif pred[i] == 'e' and y_test[i] == 'p':
+        FP += 1
+    elif pred[i] == 'p' and y_test[i] == 'e':
+        FN += 1
+    elif pred[i] == 'p' and y_test[i] == 'p':
+        TN += 1
+confusion_mat = pd.DataFrame([[TP, FP], [FN, TN]])
+acc = (TP+TN)/len(X_test)
+recall = TP/(TP+FN)
+precision = TP/(TP+FP)
+```
+
+#### Confusion matrix
+- Without Laplace
+
+|Validation:|Holdout|   | K-fold |    |
+|  ----  | ----  | ---- | ---- | ---- |
+|**Predict \ Actual**|**e** |**p**|**e**|**p**|
+|**e**| 1256 | 2         |1395.67|1    |
+|**p**| 9    |1171       |7    |1304.33|
+> K-fold 的 confusion matrix 為三個 fold 計算結果相加之後再取平均
+
+- With Laplace
+
+|Validation:|Holdout|   | K-fold |    |
+|  ----  | ----  | ---- | ---- | ---- |
+|**Predict \ Actual**|**e** |**p**|**e**|**p**|
+|**e**| 1249 | 104       |1395|104.33    |
+|**p**| 8    | 1077      |7.67 |1201|
+
+#### Accuracy, Sensitivity(Recall), Precision
+
+|Validation:| \|-----| Holdout  | -----\||\|-----|  K-fold  |-----\||
+|  ----  | ----  | ---- | ---- | ---- | ---- | ---- |
+|**Smoothing \ Performance(%)**|**Acc** |**Sens**|**Prec**|**Acc** |**Sens**|**Prec**|
+|**Without Laplace**|99.63|99.36|99.92|99.7 |99.51|99.93|
+|**With Laplace**   |95.41|99.36|92.31|95.86|99.46|93.04|
+
+
 ### Iris
+
+此處 **分別以三個不同 class 為 positive**，並計算 Confusion matrix, Accuracy, Sensitivity(Recall), Precision 等數值
+```python
+for p in range(3): # for each class being positive
+    TP, FP, FN, TN = 0, 0, 0, 0
+    pred = clf.predict(X_test)
+    positive = label_list[p]
+    for i in range(len(X_test)):
+        if pred[i] == positive and y_test[i] == positive:
+            TP += 1
+        elif pred[i] == positive and y_test[i] != positive:
+            FP += 1
+        elif pred[i] != positive and y_test[i] == positive:
+            FN += 1
+        elif pred[i] != positive and y_test[i] != positive:
+            TN += 1
+    mat = pd.DataFrame([[TP, FP], [FN, TN]])
+    confusion_mat.append(mat)
+    acc.append((TP+TN)/len(X_test))
+    recall.append(TP/(TP+FN))
+    precision.append(TP/(TP+FP))
+```
+
+#### Confusion matrix
+- Positive = **Iris-setosa**
+
+|Validation:|Holdout|   | K-fold |    |
+|  ----  | ----  | ---- | ---- | ---- |
+|**Predict \ Actual**|**Iris-setosa** |**Else**|**Iris-setosa**|**Else**|
+|**Iris-setosa**| 19 | 0         |16.67|0    |
+|**Else**| 0    |26       |0    |33.33|
+
+- Positive = **Iris-versicolor**
+
+|Validation:|Holdout|   | K-fold |    |
+|  ----  | ----  | ---- | ---- | ---- |
+|**Predict \ Actual**|**Iris-versicolor** |**Else**|**Iris-versicolor**|**Else**|
+|**Iris-versicolor**| 13 | 7         |15.67|1.33    |
+|**Else**| 0    |31       |1    |32|
+
+- Positive = **Iris-virginica**
+
+|Validation:|Holdout|   | K-fold |    |
+|  ----  | ----  | ---- | ---- | ---- |
+|**Predict \ Actual**|**Iris-virginica** |**Else**|**Iris-virginica**|**Else**|
+|**Iris-virginica**|12|0	|15.33|	1|
+|**Else**|1	|32|1.33|	32.33|
+
+#### Accuracy, Sensitivity(Recall), Precision
+
+|Validation:| \|-----| Holdout  | -----\||\|-----|  K-fold  |-----\||
+|  ----  | ----  | ---- | ---- | ---- | ---- | ---- |
+|**Positive \ Performance(%)**|**Acc** |**Sens**|**Prec**|**Acc** |**Sens**|**Prec**|
+|**Iris-setosa**|100|100|100|100|100|100|
+|**Iris-versicolor**|97.78|100|92.86|95.33|93.94|91.91|
+|**Iris-virginica**|97.78|92.31|100|95.33|92.59|93.86|
+|**\*Mean**|98.52|97.44|97.62|96.89|95.51|95.26|
+> The row **\*Mean** is the mean of three label being positive
+
+## Comparison & Conclusion
+
+## Question
+### Mushoroom
+```python
+cate_list = ['n','b','c','g','o','p','e','w','y'] # All category that 'stalk-color-below-ring' have
+num_Xi_y = [0,0,0,0,0,0,0,0,0]
+
+filter_e = (data['edible']=='e')
+num_y = len(data[filter_e])
+cnt = data[filter_e]['stalk-color-below-ring'].value_counts()
+num_Xi_y[7] = cnt[0]
+num_Xi_y[3] = cnt[1]
+num_Xi_y[5] = cnt[2]
+num_Xi_y[4] = cnt[3]
+num_Xi_y[6] = cnt[4]
+num_Xi_y[0] = cnt[5]
+
+# Without Laplace
+prob = [x / num_y for x in num_Xi_y]
+
+# With Laplace
+alpha = 0.1
+prob_l = [(x+alpha) / num_y+(alpha*len(cate_list)) for x in num_Xi_y]
+```
+
+- Without Laplace
+
+- With Laplace (alpha = 0.1)
