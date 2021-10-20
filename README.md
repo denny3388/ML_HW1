@@ -270,7 +270,7 @@ for p in range(3): # for each class being positive
 ## Question
 ### Mushoroom
 ```python
-cate_list = ['n','b','c','g','o','p','e','w','y'] # All category that 'stalk-color-below-ring' have
+cate_list = ['n','b','c','g','o','p','e','w','y'] # All categories that 'stalk-color-below-ring' has
 num_Xi_y = [0,0,0,0,0,0,0,0,0]
 
 filter_e = (data['edible']=='e')
@@ -290,7 +290,22 @@ prob = [x / num_y for x in num_Xi_y]
 alpha = 0.1
 prob_l = [(x+alpha) / num_y+(alpha*len(cate_list)) for x in num_Xi_y]
 ```
+> Laplace alpha = 0.1
 
-- Without Laplace
+![Question_mushroom](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/Question_mushroom.png)
 
-- With Laplace (alpha = 0.1)
+### Iris
+
+根據 Data visualization，下圖為在 class = Iris-Versicolour 時，petal-length 的分布
+
+![Question_Iris_1](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/Question_Iris_1.png)
+
+按照分布情況，此處我們選用 **Normal distribution** 來 fit 這個機率
+
+---> 𝑃(𝑋𝑝𝑒𝑡𝑎𝑙_𝑙𝑒𝑛𝑔𝑡ℎ|𝑌=Iris Versicolour) = *N(X, μ, σ)*
+
+- **mean** of *P()* = mean of *N()* = μ = sample mean = **4.26**
+- **S.D.** of *P()* = S.D. of *N()* = σ = sample S.D. = **0.469911**
+- 以下為 **PDF** of 𝑃(𝑋𝑝𝑒𝑡𝑎𝑙_𝑙𝑒𝑛𝑔𝑡ℎ|𝑌=Iris Versicolour)
+
+![Question_Iris_2](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/Question_Iris_2.png)
