@@ -266,6 +266,12 @@ for p in range(3): # for each class being positive
 > The row **\*Mean** is the mean of three label being positive
 
 ## Comparison & Conclusion
+### Mushoroom
+**1. Laplace smoothing 使結果變差**
+
+根據上方的 result，可以發現未加上 Laplace smoothing 的結果較好，準確率 (Accuracy) 達 99.63%，但加上 Laplace smoothing 之後結果卻變差，準確率 (Accuracy) 只有 95.41%，不論使用 Holdout 還是 K-fold validation 都有這種情況。
+
+### Iris
 
 ## Question
 ### Mushoroom
@@ -309,3 +315,4 @@ prob_l = [(x+alpha) / num_y+(alpha*len(cate_list)) for x in num_Xi_y]
 - 以下為 **PDF** of 𝑃(𝑋𝑝𝑒𝑡𝑎𝑙_𝑙𝑒𝑛𝑔𝑡ℎ|𝑌=Iris Versicolour)
 
 ![Question_Iris_2](https://raw.githubusercontent.com/denny3388/ML_HW1/master/pictures/Question_Iris_2.png)
+s
