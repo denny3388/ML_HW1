@@ -302,7 +302,7 @@ prob_l = [(x+alpha) / num_y+(alpha*len(cate_list)) for x in num_Xi_y]
 
 按照分布情況，此處我們選用 **Normal distribution** 來 fit 這個機率
 
----> 𝑃(𝑋𝑝𝑒𝑡𝑎𝑙_𝑙𝑒𝑛𝑔𝑡ℎ|𝑌=Iris Versicolour) = *N(X, μ, σ)*
+---> 𝑃(𝑋𝑝𝑒𝑡𝑎𝑙_𝑙𝑒𝑛𝑔𝑡ℎ|𝑌=Iris Versicolour) ≒ *N(X, μ, σ)*
 
 - **mean** of *P()* = mean of *N()* = μ = sample mean = **4.26**
 - **S.D.** of *P()* = S.D. of *N()* = σ = sample S.D. = **0.469911**
