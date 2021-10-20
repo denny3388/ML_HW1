@@ -39,6 +39,9 @@ data_group = data.groupby('class')
 - **cate_num_list**: 每個 feature 的所有可能的值的**數量** (Mushroom)
 - **label_list**: label 的所有可能的值 (Iris)
 
+## Data Visualization (未完成！！！)
+### Mushroom
+
 ## Data Preprocessing
 ### Mushroom
 ```python
@@ -62,9 +65,6 @@ data = data.sample(frac=1)
 ```
 - 將 data 以他們的 class 分組，之後在做資料分析時較方便
 - Shuffle the data using `sameple()`
-
-## Data Visualization (未完成！！！)
-### Mushroom
 
 ## Model Construction
 ### Mushroom
